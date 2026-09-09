@@ -21,8 +21,9 @@ from anonymizer import apply_method, generate_encryption_key, Tokenizer
 from report_generator import generate_compliance_report
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
-OUTPUT_DIR = os.path.join(BASE_DIR, "outputs")
+
+UPLOAD_DIR = "/tmp/uploads"
+OUTPUT_DIR = "/tmp/outputs"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
