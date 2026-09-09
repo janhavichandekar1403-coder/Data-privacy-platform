@@ -45,7 +45,7 @@ The platform allows users to:
 
 Upload a CSV dataset and start the privacy scanning process.
 
-![Upload Dataset](screenshots/upload.png)
+![Upload Dataset](pii_anonymizer/screenshots/upload.png)
 
 ---
 
@@ -53,7 +53,7 @@ Upload a CSV dataset and start the privacy scanning process.
 
 The platform scans the dataset and identifies potentially sensitive columns along with their confidence scores.
 
-![Review Detected Columns](screenshots/review.png)
+![Review Detected Columns](pii_anonymizer/screenshots/review.png)
 
 ---
 
@@ -61,7 +61,7 @@ The platform scans the dataset and identifies potentially sensitive columns alon
 
 After anonymization, users can review the privacy results and download the protected dataset and compliance report.
 
-![Results](screenshots/results.png)
+![Download Results](pii_anonymizer/screenshots/results.png)
 
 ---
 
