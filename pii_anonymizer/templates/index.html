@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PII Anonymization Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <div class="bg-field" aria-hidden="true">
+    <div class="grid-layer"></div>
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+    <div class="orb orb-c"></div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <svg viewBox="0 0 24 24" class="badge-icon"><path d="M12 2 3 6v6c0 5.1 3.6 9.4 9 10.5 5.4-1.1 9-5.4 9-10.5V6l-9-4Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m8.5 12 2.4 2.4L15.8 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Privacy Engine</span>
+      </div>
+      <h1>AI Privacy-Preserving<br><span class="gradient-text">Data Anonymization</span> Platform</h1>
+      <p class="hero-sub">Upload a dataset, let the engine scan every column for sensitive signals, then lock it down with the protection method you choose &mdash; before anything leaves your hands.</p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num">3</span>
+          <span class="stat-label">scan stages</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">5</span>
+          <span class="stat-label">protection methods</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">100</span>
+          <span class="stat-label">pt risk scale</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="flow-line" aria-hidden="true"></div>
+
+    <!-- STEP 1: UPLOAD -->
+    <section id="upload-section" class="card" data-step="1">
+      <div class="card-head">
+        <span class="node">01</span>
+        <div>
+          <h2>Upload dataset</h2>
+          <p class="card-sub">Drop in a CSV. The scanner reads every column and samples real values.</p>
+        </div>
+      </div>
+
+      <label class="dropzone" for="fileInput" id="dropzone">
+        <svg viewBox="0 0 24 24" class="drop-icon"><path d="M12 16V4m0 0 4 4m-4-4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span class="drop-text" id="dropText">Choose a .csv file or drag it here</span>
+        <input type="file" id="fileInput" accept=".csv">
+      </label>
+
+      <div class="upload-row">
+        <button id="uploadBtn" class="btn btn-primary">
+          <svg viewBox="0 0 24 24" class="btn-icon"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m20 20-3.4-3.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Upload &amp; Scan
+        </button>
+        <p id="uploadStatus" class="status-text"></p>
+      </div>
+    </section>
+
+    <!-- STEP 2: REVIEW DETECTED COLUMNS -->
+    <section id="review-section" class="card hidden" data-step="2">
+      <div class="card-head">
+        <span class="node">02</span>
+        <div>
+          <h2>Review detected columns</h2>
+          <p class="card-sub">Every flagged column gets a confidence score. Choose how each one gets protected.</p>
+        </div>
+      </div>
+
+      <div class="gauge-row">
+        <div class="gauge" id="gaugeBefore">
+          <svg viewBox="0 0 120 120" class="gauge-svg">
+            <circle cx="60" cy="60" r="50" class="gauge-track"/>
+            <circle cx="60" cy="60" r="50" class="gauge-fill" id="gaugeBeforeFill"/>
+          </svg>
+          <div class="gauge-center">
+            <span class="gauge-value"><span id="riskBefore">&mdash;</span></span>
+            <span class="gauge-unit">/100</span>
+          </div>
+        </div>
+        <div class="gauge-label">
+          <span class="gauge-title">Exposure risk before protection</span>
+          <span class="gauge-desc">Higher means more sensitive data sitting unprotected.</span>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="columnsTable">
+          <thead>
+            <tr>
+              <th>Column</th>
+              <th>Detected as</th>
+              <th>Confidence</th>
+              <th>Sample values</th>
+              <th>Protection</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <button id="processBtn" class="btn btn-primary">
+        <svg viewBox="0 0 24 24" class="btn-icon"><path d="M12 2 3 6v6c0 5.1 3.6 9.4 9 10.5 5.4-1.1 9-5.4 9-10.5V6l-9-4Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m8.5 12 2.4 2.4L15.8 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Apply Protection
+      </button>
+    </section>
+
+    <!-- STEP 3: RESULTS -->
+    <section id="result-section" class="card hidden" data-step="3">
+      <div class="card-head">
+        <span class="node">03</span>
+        <div>
+          <h2>Download results</h2>
+          <p class="card-sub">Compare the risk score before and after, then take your protected files.</p>
+        </div>
+      </div>
+
+      <div class="compare-row">
+        <div class="gauge gauge-sm" id="gaugeResultBefore">
+          <svg viewBox="0 0 120 120" class="gauge-svg">
+            <circle cx="60" cy="60" r="50" class="gauge-track"/>
+            <circle cx="60" cy="60" r="50" class="gauge-fill danger-fill" id="gaugeResultBeforeFill"/>
+          </svg>
+          <div class="gauge-center">
+            <span class="gauge-value"><span id="riskBeforeResult">&mdash;</span></span>
+            <span class="gauge-unit">/100</span>
+          </div>
+          <span class="gauge-caption">Before</span>
+        </div>
+
+        <svg viewBox="0 0 24 24" class="compare-arrow"><path d="M5 12h14m0 0-5-5m5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+        <div class="gauge gauge-sm" id="gaugeResultAfter">
+          <svg viewBox="0 0 120 120" class="gauge-svg">
+            <circle cx="60" cy="60" r="50" class="gauge-track"/>
+            <circle cx="60" cy="60" r="50" class="gauge-fill success-fill" id="gaugeResultAfterFill"/>
+          </svg>
+          <div class="gauge-center">
+            <span class="gauge-value"><span id="riskAfterResult">&mdash;</span></span>
+            <span class="gauge-unit">/100</span>
+          </div>
+          <span class="gauge-caption">After</span>
+        </div>
+      </div>
+
+      <p id="keyNotice" class="key-notice hidden">
+        <svg viewBox="0 0 24 24" class="key-icon"><path d="M14 7a4 4 0 1 0-3.5 3.97L9 13v2H7v2H5v2h4l4.5-4.5A4 4 0 0 0 14 7Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        <span>Encryption key &mdash; save this now, it's shown only once:</span>
+        <code id="encKey"></code>
+      </p>
+
+      <div class="download-row">
+        <a id="csvLink" href="#" class="btn btn-outline">
+          <svg viewBox="0 0 24 24" class="btn-icon"><path d="M12 16V4m0 12 4-4m-4 4-4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Anonymized CSV
+        </a>
+        <a id="reportLink" href="#" class="btn btn-outline">
+          <svg viewBox="0 0 24 24" class="btn-icon"><path d="M7 3h7l4 4v14H7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 3v4h4M9 13h6M9 16h6M9 10h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Compliance Report (PDF)
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
